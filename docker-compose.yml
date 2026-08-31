@@ -5,7 +5,8 @@ services:
     volumes:
       - dbstore:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      DB_NAME: ${DB_NAME}
 
   site:
     depends_on:
@@ -17,10 +18,11 @@ services:
     ports:
     - 8080:80
     environment:
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: rootpassword
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
 
   phpmyadmin:
     depends_on:
@@ -31,6 +33,6 @@ services:
      - 8081:80
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 volumes:
   dbstore:

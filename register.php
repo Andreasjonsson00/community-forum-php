@@ -4,18 +4,26 @@ echo "<h1>" . $page_name . "</h1>";
 ?>
 
 <?php
+require "database.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $hash = password_hash($password, PASSWORD_DEFAULT);
 
-    echo "<p>Formuläret skickades!</p>";
+    $sql = "INSERT INTO users (first_name, last_name, email, password)
+            VALUES ('$firstName', '$lastName', '$email', '$hash')";
+
+    if ($conn->query($sql)) {
+        echo "<p>Användaren skapades!</p>";
+    } else {
+        echo "<p>Fel: " . $conn->error . "</p>";
+    }
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="sv">
 
