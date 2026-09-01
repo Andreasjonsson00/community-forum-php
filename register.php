@@ -1,7 +1,6 @@
 <?php
 require "database.php";
-$page_name = "Titel";
-echo "<h1>" . $page_name . "</h1>";
+
 ?>
 
 <?php
@@ -24,46 +23,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skapa konto</title>
+    <title>Create Account</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <?php require "menu.php"; ?>
 
-    <h1>Skapa konto</h1>
+    <main>
+        <h1 class="title">Create Account</h1>
+        <form method="POST" action="register.php">
+            <div class="form-row">
+                <label for="first_name">Förnamn:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <br><br>
 
-    <form method="POST" action="register.php">
+            <div class="form-row">
+                <label for="last_name">Efternamn:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
+            <br><br>
 
-        <label for="first_name">Förnamn:</label>
-        <input type="text" id="first_name" name="first_name" required>
+            <div class="form-row">
+                <label for="email">E-post:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <br><br>
 
-        <br><br>
-
-        <label for="last_name">Efternamn:</label>
-        <input type="text" id="last_name" name="last_name" required>
-
-        <br><br>
-
-        <label for="email">E-post:</label>
-        <input type="email" id="email" name="email" required>
-
-        <br><br>
-
-        <label for="password">Lösenord:</label>
-        <input type="password" id="password" name="password" required>
-
-        <br><br>
-
-        <button type="submit">Skapa konto</button>
-
-    </form>
-
+            <div class="form-row">
+                <label for="password">Lösenord:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <br><br>
+            <div class="form-row">
+                <button type="submit">Skapa konto</button>
+            </div>
+        </form>
+    </main>
+    <?php require "footer.php"; ?>
 </body>
 
 </html>
