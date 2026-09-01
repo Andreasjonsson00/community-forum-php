@@ -1,11 +1,10 @@
 <?php
+require "database.php";
 $page_name = "Titel";
 echo "<h1>" . $page_name . "</h1>";
 ?>
 
 <?php
-require "database.php";
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $firstName = $_POST['first_name'];
