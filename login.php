@@ -18,7 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $_SESSION['user_id'] = $user['id'];
 
-            echo "Du är inloggad!";
+            header("Location: index.php");
+            exit;
         } else {
 
             echo "Fel lösenord.";
