@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,6 +14,7 @@
 
 <body>
     <?php require "menu.php"; ?>
+
     <main>
         <h1>Welcome to the Community Forum</h1>
         <p>This is the main content of the page.</p>
