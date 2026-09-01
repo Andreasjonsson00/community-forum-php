@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <?php require "menu.php"; ?>
+    <?php require "includes/menu.php"; ?>
 
     <main>
         <h1>Welcome to the Community Forum</h1>
@@ -25,7 +25,7 @@
         }
         ?>
     </main>
-    <?php require "footer.php"; ?>
+    <?php require "includes/menu.php"; ?>
 </body>
 
 </html>

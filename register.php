@@ -1,5 +1,5 @@
 <?php
-require "database.php";
+require "includes/database.php";
 session_start();
 ?>
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-    <?php require "menu.php"; ?>
+    <?php require "includes/menu.php"; ?>
 
     <main>
         <h1 class="title">Create Account</h1>
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </main>
-    <?php require "footer.php"; ?>
+    <?php require "includes/menu.php"; ?>
 </body>
 
 </html>
