@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </main>
-    <?php require "includes/menu.php"; ?>
+    <?php require "includes/footer.php"; ?>
 </body>
 
 </html>
