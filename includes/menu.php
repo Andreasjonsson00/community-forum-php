@@ -5,6 +5,7 @@
             <li><a href="index.php">Home</a></li>
 
             <?php if (isset($_SESSION['user_id'])): ?>
+                <li><a href="create-group.php">Create new Group</a></li>
                 <li>Logged in</li>
                 <li><a href="logout.php">Log out</a></li>
             <?php else: ?>
