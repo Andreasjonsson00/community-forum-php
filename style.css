@@ -3,6 +3,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin: 0;
 }
 
 h1 {
@@ -22,6 +23,8 @@ header {
   color: white;
   padding: 20px;
   text-align: center;
+  display: flex;
+  justify-content: start;
 }
 
 header .logo {
@@ -29,10 +32,12 @@ header .logo {
   font-weight: bold;
   text-decoration: none;
   color: white;
+  margin-top: 28px;
 }
 
 nav ul {
   list-style-type: none;
+  text-align: left;
 }
 
 a,

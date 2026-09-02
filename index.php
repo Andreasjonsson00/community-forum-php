@@ -12,20 +12,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body>
-    <?php require "includes/menu.php"; ?>
+<?php require "includes/menu.php"; ?>
 
+<body>
     <main>
         <h1>Welcome to the Community Forum</h1>
-        <p>This is the main content of the page.</p>
         <?php require "groups.php"; ?>
-        <?php $groups = get_Groups();
-        foreach ($groups as $group) {
-            echo "<p>" . $group['name'] . " - " . $group['description'] . "</p>";
-        }
-        ?>
     </main>
-    <?php require "includes/menu.php"; ?>
+    <?php require "includes/footer.php"; ?>
 </body>
 
 </html>
