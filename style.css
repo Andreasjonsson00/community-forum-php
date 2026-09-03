@@ -42,7 +42,7 @@ nav ul {
 
 a,
 a:visited {
-  color: white;
+  color: inherit;
   text-decoration: none;
 }
 
