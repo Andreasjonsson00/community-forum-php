@@ -10,26 +10,29 @@
 
 </head>
 
+<?php require 'includes/menu.php'; ?>
+
 <body>
-    <?php
-    require 'includes/menu.php';
-    ?>
-    <h1>Create group</h1>
-    <form action="store-group.php" method="POST">
-        <label for="name">Group name:</label>
-        <input type="text" id="name" name="name" required>
+    <main>
+        <h1 class="title">Create group</h1>
+        <form action="store-group.php" method="POST">
+            <div class="form-row">
+                <label for="name">Group name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
 
-        <br><br>
+            <br><br>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea>
-
-        <button type="submit">Create group</button>
-    </form>
-
-    <?php
-    require 'includes/footer.php';
-    ?>
+            <div class="form-row">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="create-group-button">
+                <button type="submit">Create group</button>
+            </div>
+        </form>
+    </main>
+    <?php require 'includes/footer.php'; ?>
 </body>
 
 </html>
