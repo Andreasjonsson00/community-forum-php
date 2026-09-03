@@ -16,5 +16,5 @@ $sql = "INSERT INTO user_groups (user_id, group_id)
 
 $conn->query($sql);
 
-header('Location: group.php');
+header('Location: index.php');
 exit;
