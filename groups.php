@@ -6,7 +6,9 @@ $result = $conn->query($sql);
 ?>
 
 <?php while ($group = $result->fetch_assoc()): ?>
-    <h2 class="group-name"><?= htmlspecialchars($group['name']) ?></h2>
+    <h2 class="group-name">
+        <a href="group.php?id=<?= $group['id'] ?>"><?= htmlspecialchars($group['name']) ?></a>
+    </h2>
     <p class="description"><?= htmlspecialchars($group['description']) ?></p>
 
     <?php if (isset($_SESSION['user_id'])): ?>
