@@ -9,9 +9,16 @@ $result = $conn->query($sql);
     <h2 class="group-name"><?= htmlspecialchars($group['name']) ?></h2>
     <p class="description"><?= htmlspecialchars($group['description']) ?></p>
 
-    <form action="join-group.php" method="POST">
-        <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
-        <button type="submit">Join</button>
-    </form>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <form action="join-group.php" method="POST">
+            <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
+            <button type="submit">Join</button>
+        </form>
+    <?php else: ?>
+        <form action="register.php" method="GET">
+            <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
+            <button type="submit">Register to Join</button>
+        </form>
+    <?php endif; ?>
 
 <?php endwhile; ?>
