@@ -12,9 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<?php require 'includes/menu.php'; ?>
 
 <body>
+    <?php require 'includes/menu.php'; ?>
     <main>
         <h1 class="title">Create group</h1>
         <form action="store-group.php" method="POST">
