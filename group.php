@@ -1,6 +1,18 @@
 <?php
 session_start();
 require "includes/database.php";
+
+$groupId = $_GET['id'];
+$group_sql = "SELECT * FROM `groups` 
+              WHERE id = $groupId";
+$group_result = $conn->query($group_sql);
+$group = $group_result->fetch_assoc();
+
+
+$discussion_sql = "SELECT * FROM discussions
+                  WHERE group_id = $groupId
+                  ORDER BY created_at DESC";
+$discussion_result = $conn->query($discussion_sql);
 ?>
 
 <!DOCTYPE html>
@@ -16,16 +28,8 @@ require "includes/database.php";
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<?php require "includes/menu.php";
-
-$groupId = $_GET['id'];
-
-$sql = "SELECT * FROM `groups` WHERE id = $groupId";
-$result = $conn->query($sql);
-$group = $result->fetch_assoc();
-?>
-
 <body>
+    <?php require "includes/menu.php"; ?>
     <main>
         <h1><?= htmlspecialchars($group['name']) ?></h1>
         <p class="description">
@@ -53,6 +57,17 @@ $group = $result->fetch_assoc();
                 </div>
             </form>
         <?php endif; ?>
+
+        <h2>Discussions</h2>
+
+        <?php while ($discussion = $discussion_result->fetch_assoc()): ?>
+
+            <article>
+                <h3><?= htmlspecialchars($discussion['subject']) ?></h3>
+                <p><?= htmlspecialchars($discussion['content']) ?></p>
+            </article>
+
+        <?php endwhile; ?>
     </main>
     <?php require "includes/footer.php"; ?>
 </body>

@@ -45,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<?php require "includes/menu.php"; ?>
 
 <body>
+    <?php require "includes/menu.php"; ?>
     <main>
         <h1 class="title">Login</h1>
         <form method="POST" action="login.php">
