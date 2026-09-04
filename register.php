@@ -1,22 +1,26 @@
 <?php
 require "includes/database.php";
 session_start();
-?>
 
-<?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $firstName = $_POST['first_name'];
-    $lastName = $_POST['last_name'];
-    $email = $_POST['email'];
+    $firstName = trim($_POST['first_name']);
+    $lastName = trim($_POST['last_name']);
+    $email = strtolower(trim($_POST['email']));
     $password = $_POST['password'];
     $hash = password_hash($password, PASSWORD_DEFAULT);
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "<p>Ogiltig e-postadress.</p>";
+        exit;
+    }
 
     $sql = "INSERT INTO users (first_name, last_name, email, password)
             VALUES ('$firstName', '$lastName', '$email', '$hash')";
 
     if ($conn->query($sql)) {
-        echo "<p>Användaren skapades!</p>";
+        header("Location: index.php");
+        exit;
     } else {
         echo "<p>Fel: " . $conn->error . "</p>";
     }
