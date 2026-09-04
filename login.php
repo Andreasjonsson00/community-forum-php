@@ -1,6 +1,6 @@
 <?php
-require "includes/database.php";
 session_start();
+require "includes/database.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

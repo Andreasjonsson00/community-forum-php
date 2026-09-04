@@ -84,6 +84,6 @@ footer {
   width: 400px;
 }
 
-.create-group-button {
+.create-group-button, .create-discussion-button {
   margin-top: 20px;
 }

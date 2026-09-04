@@ -1,7 +1,7 @@
 <?php
-
-require 'includes/database.php';
 session_start();
+require 'includes/database.php';
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
