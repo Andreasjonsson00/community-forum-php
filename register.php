@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES ('$firstName', '$lastName', '$email', '$hash')";
 
     if ($conn->query($sql)) {
-        header("Location: index.php");
+        header("Location: login.php");
         exit;
     } else {
         echo "<p>Fel: " . $conn->error . "</p>";
