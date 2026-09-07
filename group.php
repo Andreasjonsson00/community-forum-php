@@ -10,7 +10,8 @@ $group = $group_result->fetch_assoc();
 
 
 $discussion_sql = "SELECT * FROM discussions
-                  WHERE group_id = $groupId
+                  JOIN users ON discussions.user_id = users.id
+                  WHERE discussions.group_id = $groupId
                   ORDER BY created_at DESC";
 $discussion_result = $conn->query($discussion_sql);
 ?>
@@ -37,7 +38,7 @@ $discussion_result = $conn->query($discussion_sql);
         </p>
 
         <?php if (isset($_SESSION['user_id'])): ?>
-            <h2>Create Discussion</h2>
+            <h2>New Discussion</h2>
 
             <form action="create-discussion.php" method="POST">
                 <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
@@ -53,21 +54,39 @@ $discussion_result = $conn->query($discussion_sql);
                 </div>
 
                 <div class="create-discussion-button">
-                    <button type="submit">Create Discussion</button>
+                    <button type="submit">New Discussion</button>
                 </div>
             </form>
         <?php endif; ?>
 
-        <h2>Discussions</h2>
 
         <?php while ($discussion = $discussion_result->fetch_assoc()): ?>
 
-            <article>
-                <h3><?= htmlspecialchars($discussion['subject']) ?></h3>
-                <p><?= htmlspecialchars($discussion['content']) ?></p>
-            </article>
+            <?php
+            $discussionId = $discussion['id'];
 
-        <?php endwhile; ?>
+            $posts_sql = "SELECT posts.*, users.first_name, users.last_name
+              FROM posts
+              JOIN users ON posts.user_id = users.id
+              WHERE posts.discussion_id = $discussionId
+              ORDER BY posts.created_at ASC";
+
+            $posts_result = $conn->query($posts_sql);
+            ?>
+
+            <article>
+                <div class="discussion">
+                    <h3>
+                        <a href="discussion.php?id=<?= $discussion['id'] ?>">
+                            <?= htmlspecialchars($discussion['subject']) ?>
+                        </a>
+                    </h3>
+                    <p><?= htmlspecialchars($discussion['content']) ?></p>
+                    <p>Created at: <?= htmlspecialchars($discussion['created_at']) ?></p>
+                    <p>Created by: <?= htmlspecialchars($discussion['first_name']) ?>
+                        <?= htmlspecialchars($discussion['last_name']) ?></p>
+                </div>
+            <?php endwhile; ?>
     </main>
     <?php require "includes/footer.php"; ?>
 </body>
