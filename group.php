@@ -9,10 +9,19 @@ $group_result = $conn->query($group_sql);
 $group = $group_result->fetch_assoc();
 
 
-$discussion_sql = "SELECT * FROM discussions
+$discussion_sql = "SELECT discussions.id AS discussion_id,
+                          discussions.group_id,
+                          discussions.user_id,
+                          discussions.subject,
+                          discussions.created_at,
+                          discussions.content,
+                          users.first_name,
+                          users.last_name
+                  FROM discussions
                   JOIN users ON discussions.user_id = users.id
                   WHERE discussions.group_id = $groupId
-                  ORDER BY created_at DESC";
+                  ORDER BY discussions.created_at DESC";
+
 $discussion_result = $conn->query($discussion_sql);
 ?>
 
@@ -22,7 +31,7 @@ $discussion_result = $conn->query($discussion_sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Forum</title>
+    <title><?= htmlspecialchars($group['name']) ?></title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,32 +47,17 @@ $discussion_result = $conn->query($discussion_sql);
         </p>
 
         <?php if (isset($_SESSION['user_id'])): ?>
-            <h2>New Discussion</h2>
 
-            <form action="create-discussion.php" method="POST">
-                <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
-
-                <div class="form-row">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-
-                <div class="form-row">
-                    <label for="content">Content</label>
-                    <textarea id="content" name="content" required></textarea>
-                </div>
-
-                <div class="create-discussion-button">
-                    <button type="submit">New Discussion</button>
-                </div>
-            </form>
+            <a href="create-discussion.php?group_id=<?= $group['id'] ?>">
+                <button class="new-discussion-button" type="button">New Discussion</button>
+            </a>
         <?php endif; ?>
 
 
         <?php while ($discussion = $discussion_result->fetch_assoc()): ?>
 
             <?php
-            $discussionId = $discussion['id'];
+            $discussionId = $discussion['discussion_id'];
 
             $posts_sql = "SELECT posts.*, users.first_name, users.last_name
               FROM posts
@@ -73,18 +67,17 @@ $discussion_result = $conn->query($discussion_sql);
 
             $posts_result = $conn->query($posts_sql);
             ?>
-
-            <article>
+           
                 <div class="discussion">
                     <h3>
-                        <a href="discussion.php?id=<?= $discussion['id'] ?>">
+                        <a href="discussion.php?id=<?= $discussion['discussion_id'] ?>">
                             <?= htmlspecialchars($discussion['subject']) ?>
                         </a>
                     </h3>
                     <p><?= htmlspecialchars($discussion['content']) ?></p>
-                    <p>Created at: <?= htmlspecialchars($discussion['created_at']) ?></p>
-                    <p>Created by: <?= htmlspecialchars($discussion['first_name']) ?>
-                        <?= htmlspecialchars($discussion['last_name']) ?></p>
+                    <p><?= htmlspecialchars($discussion['created_at']) ?></p>
+                    <p><?= ucfirst(strtolower($discussion['first_name'])) ?>
+                        <?= ucfirst(strtolower($discussion['last_name'])) ?></p>
                 </div>
             <?php endwhile; ?>
     </main>

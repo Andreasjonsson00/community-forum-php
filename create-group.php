@@ -17,13 +17,11 @@
     <?php require 'includes/menu.php'; ?>
     <main>
         <h1 class="title">Create group</h1>
-        <form action="store-group.php" method="POST">
+        <form class="create-group-form" action="store-group.php" method="POST">
             <div class="form-row">
                 <label for="name">Group name:</label>
                 <input type="text" id="name" name="name" required>
             </div>
-
-            <br><br>
 
             <div class="form-row">
                 <label for="description">Description:</label>

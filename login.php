@@ -55,12 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="email">E-post:</label>
                 <input type="email" id="email" name="email" required>
             </div>
-            <br><br>
             <div class="form-row">
                 <label for="password">Lösenord:</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <br><br>
             <div class="form-row">
                 <button type="submit">Logga in</button>
             </div>

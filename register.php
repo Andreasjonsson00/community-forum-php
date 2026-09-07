@@ -50,25 +50,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="first_name">Förnamn:</label>
                 <input type="text" id="first_name" name="first_name" required>
             </div>
-            <br><br>
 
             <div class="form-row">
                 <label for="last_name">Efternamn:</label>
                 <input type="text" id="last_name" name="last_name" required>
             </div>
-            <br><br>
 
             <div class="form-row">
                 <label for="email">E-post:</label>
                 <input type="email" id="email" name="email" required>
             </div>
-            <br><br>
 
             <div class="form-row">
                 <label for="password">Lösenord:</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <br><br>
             <div class="form-row">
                 <button type="submit">Skapa konto</button>
             </div>
