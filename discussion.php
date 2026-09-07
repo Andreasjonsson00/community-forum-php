@@ -25,7 +25,7 @@ if (!$discussion) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Forum</title>
+    <title><?= htmlspecialchars($discussion['subject']) ?></title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,23 +37,18 @@ if (!$discussion) {
     <?php require "includes/menu.php"; ?>
 
     <main>
-
-        <article>
-
             <div class="discussion">
-
                 <h1><?= htmlspecialchars($discussion['subject']) ?></h1>
                 <p class="description">
                     <?= htmlspecialchars($discussion['content']) ?>
                 </p>
                 <p>
-                    Created at: <?= htmlspecialchars($discussion['created_at']) ?>
+                    <?= htmlspecialchars($discussion['created_at']) ?>
                 </p>
                 <p>
-                    Created by: <?= htmlspecialchars($discussion['first_name']) ?>
-                    <?= htmlspecialchars($discussion['last_name']) ?>
+                    <?= ucfirst(strtolower($discussion['first_name'])) ?>
+                    <?= ucfirst(strtolower($discussion['last_name'])) ?>
                 </p>
-
             </div>
 
             <?php
@@ -72,26 +67,29 @@ if (!$discussion) {
                     <article>
                         <p> <?= htmlspecialchars($post['content']) ?>
                         </p>
-                        <p> Posted at: <?= htmlspecialchars($post['created_at']) ?>
+                        <p><?= htmlspecialchars($post['created_at']) ?>
                         </p>
-                        <p>Posted by: <?= htmlspecialchars($post['first_name']) ?>
-                            <?= htmlspecialchars($post['last_name']) ?>
+                        <p><?= ucfirst(strtolower($post['first_name'])) ?>
+                            <?= ucfirst(strtolower($post['last_name'])) ?>
                         </p>
                     </article>
                 <?php endwhile; ?>
             </div>
-        </article>
 
         <?php if (isset($_SESSION['user_id'])): ?>
-            <form method="POST" action="reply.php">
-                <textarea name="content" required></textarea>
-                <input
-                    type="hidden"
-                    name="discussion_id"
-                    value="<?= $discussionId ?>">
-                <button type="submit">
-                    Reply
-                </button>
+            <form class="reply-form" method="POST" action="reply.php">
+                <div class="form-row">
+                    <textarea name="content" required></textarea>
+                    <input
+                        type="hidden"
+                        name="discussion_id"
+                        value="<?= $discussionId ?>">
+                </div>
+                <div class="form-row">
+                    <button class="reply-button" type="submit">
+                        Reply
+                    </button>
+                </div>
             </form>
         <?php endif; ?>
     </main>

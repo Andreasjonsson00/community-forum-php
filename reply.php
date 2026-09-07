@@ -37,5 +37,5 @@ $sql = "INSERT INTO posts (content, discussion_id, user_id, created_at)
 
 $conn->query($sql);
 
-header('Location: group.php?id=' . $group_id);
+header('Location: discussion.php?id=' . $discussion_id);
 exit;

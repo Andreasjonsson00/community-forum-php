@@ -48,11 +48,11 @@ a:visited {
 
 main {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 400px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 20px;
 }
 
@@ -66,6 +66,7 @@ textarea {
 
 .form-row {
   display: flex;
+  margin-bottom: 10px;
 }
 
 .form-row label {
@@ -84,20 +85,48 @@ footer {
   width: 400px;
 }
 
-.create-group-button,
-.create-discussion-button {
-  margin-top: 20px;
+.create-group-button {
+  margin-top: 10px;
+  margin-left: 300px;
 }
 
-.discussion {
+.create-discussion-button {
+  margin-top: 10px;
+  margin-left: 268px;
+}
+
+.discussion  {
   border: 1px solid #040404;
-  padding: 10px;
+  padding: 0 10px;
   margin-bottom: 10px;
   width: 100%;
 }
 .posts {
-  border: 1px solid #ccc;
-  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  
+}
+
+.new-discussion-button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.reply-form .create-discussion-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+article  {
+  border: 1px solid #040404;
+  padding: 0 10px;
   margin-bottom: 10px;
   width: 100%;
 }
