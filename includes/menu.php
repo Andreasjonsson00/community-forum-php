@@ -1,3 +1,15 @@
+<?php
+require "database.php";
+
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $user_sql = "SELECT * FROM users WHERE id = $user_id";
+    $user_result = $conn->query($user_sql);
+    $user = $user_result->fetch_assoc();
+}
+
+?>
+
 <header>
     <a href="index.php" class="logo">Community Forum</a>
     <nav>
@@ -8,6 +20,9 @@
                 <li><a href="create-group.php">Create new Group</a></li>
                 <li>Logged in</li>
                 <li><a href="logout.php">Log out</a></li>
+                <li>
+                    <?= htmlspecialchars(ucfirst(strtolower($user['first_name']))) ?>
+                </li>
             <?php else: ?>
                 <li><a href="login.php">Log in</a></li>
                 <li><a href="register.php">Register</a></li>
