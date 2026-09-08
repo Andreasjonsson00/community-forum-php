@@ -20,6 +20,13 @@ if ($member_result->num_rows === 0) {
     exit;
 }
 
+$requests_sql = "SELECT group_requests.*, users.first_name, users.last_name
+                 FROM group_requests
+                 JOIN users ON group_requests.user_id = users.id
+                 WHERE group_requests.group_id = $groupId";
+
+$requests_result = $conn->query($requests_sql);
+
 $group_sql = "SELECT * FROM `groups` 
               WHERE id = $groupId";
 
@@ -93,10 +100,30 @@ $discussion_result = $conn->query($discussion_sql);
                 </h3>
                 <p><?= htmlspecialchars($discussion['content']) ?></p>
                 <p><?= htmlspecialchars($discussion['created_at']) ?></p>
-                <p><?= ucfirst(strtolower($discussion['first_name'])) ?>
-                    <?= ucfirst(strtolower($discussion['last_name'])) ?></p>
+                <p><?= htmlspecialchars(ucfirst(strtolower($discussion['first_name']))) ?>
+                    <?= htmlspecialchars(ucfirst(strtolower($discussion['last_name']))) ?></p>
             </div>
         <?php endwhile; ?>
+
+        <?php if ($requests_result->num_rows > 0): ?>
+            <h2>Membership Requests</h2>
+            <?php while ($request = $requests_result->fetch_assoc()): ?>
+                <div>
+                    <p>
+                        <?= htmlspecialchars(ucfirst(strtolower($request['first_name']))) ?>
+                        <?= htmlspecialchars(ucfirst(strtolower($request['last_name']))) ?>
+                    </p>
+
+                    <form action="approve-request.php" method="POST">
+                        <input
+                            type="hidden"
+                            name="request_id"
+                            value="<?= $request['id'] ?>">
+                        <button type="submit">Approve</button>
+                    </form>
+                </div>
+            <?php endwhile; ?>
+        <?php endif; ?>
     </main>
     <?php require "includes/footer.php"; ?>
 </body>
