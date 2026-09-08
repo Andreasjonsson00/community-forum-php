@@ -17,6 +17,11 @@ $discussion = $discussion_result->fetch_assoc();
 if (!$discussion) {
     die("Diskussionen finns inte.");
 }
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -37,44 +42,44 @@ if (!$discussion) {
     <?php require "includes/menu.php"; ?>
 
     <main>
-            <div class="discussion">
-                <h1><?= htmlspecialchars($discussion['subject']) ?></h1>
-                <p class="description">
-                    <?= htmlspecialchars($discussion['content']) ?>
-                </p>
-                <p>
-                    <?= htmlspecialchars($discussion['created_at']) ?>
-                </p>
-                <p>
-                    <?= ucfirst(strtolower($discussion['first_name'])) ?>
-                    <?= ucfirst(strtolower($discussion['last_name'])) ?>
-                </p>
-            </div>
+        <div class="discussion">
+            <h1><?= htmlspecialchars($discussion['subject']) ?></h1>
+            <p class="description">
+                <?= htmlspecialchars($discussion['content']) ?>
+            </p>
+            <p>
+                <?= htmlspecialchars($discussion['created_at']) ?>
+            </p>
+            <p>
+                <?= ucfirst(strtolower($discussion['first_name'])) ?>
+                <?= ucfirst(strtolower($discussion['last_name'])) ?>
+            </p>
+        </div>
 
-            <?php
-            $posts_sql = "SELECT posts.*, users.first_name, users.last_name
+        <?php
+        $posts_sql = "SELECT posts.*, users.first_name, users.last_name
                       FROM posts
                       JOIN users ON posts.user_id = users.id
                       WHERE posts.discussion_id = $discussionId
                       ORDER BY posts.created_at ASC";
 
-            $posts_result = $conn->query($posts_sql);
-            ?>
+        $posts_result = $conn->query($posts_sql);
+        ?>
 
-            <div class="posts">
+        <div class="posts">
 
-                <?php while ($post = $posts_result->fetch_assoc()): ?>
-                    <article>
-                        <p> <?= htmlspecialchars($post['content']) ?>
-                        </p>
-                        <p><?= htmlspecialchars($post['created_at']) ?>
-                        </p>
-                        <p><?= ucfirst(strtolower($post['first_name'])) ?>
-                            <?= ucfirst(strtolower($post['last_name'])) ?>
-                        </p>
-                    </article>
-                <?php endwhile; ?>
-            </div>
+            <?php while ($post = $posts_result->fetch_assoc()): ?>
+                <article>
+                    <p> <?= htmlspecialchars($post['content']) ?>
+                    </p>
+                    <p><?= htmlspecialchars($post['created_at']) ?>
+                    </p>
+                    <p><?= ucfirst(strtolower($post['first_name'])) ?>
+                        <?= ucfirst(strtolower($post['last_name'])) ?>
+                    </p>
+                </article>
+            <?php endwhile; ?>
+        </div>
 
         <?php if (isset($_SESSION['user_id'])): ?>
             <form class="reply-form" method="POST" action="reply.php">

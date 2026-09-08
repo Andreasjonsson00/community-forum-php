@@ -2,12 +2,29 @@
 session_start();
 require "includes/database.php";
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $groupId = $_GET['id'];
+$userId = $_SESSION['user_id'];
+
+$member_sql = "SELECT * FROM user_groups
+               WHERE user_id = $userId
+               AND group_id = $groupId";
+$member_result = $conn->query($member_sql);
+
+if ($member_result->num_rows === 0) {
+    header("Location: index.php");
+    exit;
+}
+
 $group_sql = "SELECT * FROM `groups` 
               WHERE id = $groupId";
+
 $group_result = $conn->query($group_sql);
 $group = $group_result->fetch_assoc();
-
 
 $discussion_sql = "SELECT discussions.id AS discussion_id,
                           discussions.group_id,
@@ -67,19 +84,19 @@ $discussion_result = $conn->query($discussion_sql);
 
             $posts_result = $conn->query($posts_sql);
             ?>
-           
-                <div class="discussion">
-                    <h3>
-                        <a href="discussion.php?id=<?= $discussion['discussion_id'] ?>">
-                            <?= htmlspecialchars($discussion['subject']) ?>
-                        </a>
-                    </h3>
-                    <p><?= htmlspecialchars($discussion['content']) ?></p>
-                    <p><?= htmlspecialchars($discussion['created_at']) ?></p>
-                    <p><?= ucfirst(strtolower($discussion['first_name'])) ?>
-                        <?= ucfirst(strtolower($discussion['last_name'])) ?></p>
-                </div>
-            <?php endwhile; ?>
+
+            <div class="discussion">
+                <h3>
+                    <a href="discussion.php?id=<?= $discussion['discussion_id'] ?>">
+                        <?= htmlspecialchars($discussion['subject']) ?>
+                    </a>
+                </h3>
+                <p><?= htmlspecialchars($discussion['content']) ?></p>
+                <p><?= htmlspecialchars($discussion['created_at']) ?></p>
+                <p><?= ucfirst(strtolower($discussion['first_name'])) ?>
+                    <?= ucfirst(strtolower($discussion['last_name'])) ?></p>
+            </div>
+        <?php endwhile; ?>
     </main>
     <?php require "includes/footer.php"; ?>
 </body>
