@@ -55,9 +55,9 @@ $result = $conn->query($sql);
                 </form>
 
             <?php else: ?>
-                <form action="join-group.php" method="POST">
+                <form action="apply-group.php" method="POST">
                     <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
-                    <button type="submit">Join</button>
+                    <button type="submit">Apply to Join</button>
                 </form>
             <?php endif; ?>
 
