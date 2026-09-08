@@ -19,10 +19,10 @@ if (isset($_SESSION['user_id'])) {
             <?php if (isset($_SESSION['user_id'])): ?>
                 <li><a href="create-group.php">Create new Group</a></li>
                 <li>Logged in</li>
-                <li><a href="logout.php">Log out</a></li>
                 <li>
                     <?= htmlspecialchars(ucfirst(strtolower($user['first_name']))) ?>
                 </li>
+                <li><a href="logout.php">Log out</a></li>
             <?php else: ?>
                 <li><a href="login.php">Log in</a></li>
                 <li><a href="register.php">Register</a></li>
