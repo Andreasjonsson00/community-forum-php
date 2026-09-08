@@ -51,8 +51,8 @@ if (!isset($_SESSION['user_id'])) {
                 <?= htmlspecialchars($discussion['created_at']) ?>
             </p>
             <p>
-                <?= ucfirst(strtolower($discussion['first_name'])) ?>
-                <?= ucfirst(strtolower($discussion['last_name'])) ?>
+                <?= htmlspecialchars(ucfirst(strtolower($discussion['first_name']))) ?>
+                <?= htmlspecialchars(ucfirst(strtolower($discussion['last_name']))) ?>
             </p>
         </div>
 
@@ -74,8 +74,8 @@ if (!isset($_SESSION['user_id'])) {
                     </p>
                     <p><?= htmlspecialchars($post['created_at']) ?>
                     </p>
-                    <p><?= ucfirst(strtolower($post['first_name'])) ?>
-                        <?= ucfirst(strtolower($post['last_name'])) ?>
+                    <p><?= htmlspecialchars(ucfirst(strtolower($post['first_name']))) ?>
+                        <?= htmlspecialchars(ucfirst(strtolower($post['last_name']))) ?>
                     </p>
                 </article>
             <?php endwhile; ?>
