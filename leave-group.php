@@ -10,11 +10,9 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $group_id = $_POST['group_id'];
 
-$sql = "DELETE FROM user_groups
-        WHERE user_id = $user_id
-        AND group_id = $group_id";
-
-$conn->query($sql);
+$stmt = $conn->prepare("DELETE FROM user_groups WHERE user_id = ? AND group_id = ?");
+$stmt->bind_param("ii", $user_id, $group_id);
+$stmt->execute();
 
 header('Location: index.php');
 exit;

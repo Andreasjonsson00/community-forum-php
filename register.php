@@ -15,10 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $sql = "INSERT INTO users (first_name, last_name, email, password)
-            VALUES ('$firstName', '$lastName', '$email', '$hash')";
+    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $firstName, $lastName, $email, $hash);
 
-    if ($conn->query($sql)) {
+    if ($stmt->execute()) {
         header("Location: login.php");
         exit;
     } else {

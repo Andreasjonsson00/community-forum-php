@@ -1,8 +1,9 @@
 <?php
 require 'includes/database.php';
 
-$sql = "SELECT * FROM `groups`";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("SELECT * FROM `groups`");
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 
@@ -16,11 +17,10 @@ $result = $conn->query($sql);
         $user_id = $_SESSION['user_id'];
         $group_id = $group['id'];
 
-        $access_sql = "SELECT * FROM user_groups
-                       WHERE user_id = $user_id
-                       AND group_id = $group_id";
-
-        $access_result = $conn->query($access_sql);
+        $access_stmt = $conn->prepare("SELECT * FROM user_groups WHERE user_id = ? AND group_id = ?");
+        $access_stmt->bind_param("ii", $user_id, $group_id);
+        $access_stmt->execute();
+        $access_result = $access_stmt->get_result();
         $canAccessGroup = $access_result->num_rows > 0;
     }
 
@@ -41,11 +41,10 @@ $result = $conn->query($sql);
             <?php
             $user_id = $_SESSION['user_id'];
             $group_id = $group['id'];
-            $member_sql = "SELECT * FROM user_groups
-                           WHERE user_id = $user_id
-                           AND group_id = $group_id";
-
-            $member_result = $conn->query($member_sql);
+            $member_stmt = $conn->prepare("SELECT * FROM user_groups WHERE user_id = ? AND group_id = ?");
+            $member_stmt->bind_param("ii", $user_id, $group_id);
+            $member_stmt->execute();
+            $member_result = $member_stmt->get_result();
             ?>
 
             <?php if ($member_result->num_rows > 0): ?>

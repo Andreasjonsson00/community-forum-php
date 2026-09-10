@@ -3,8 +3,10 @@ require "database.php";
 
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
-    $user_sql = "SELECT * FROM users WHERE id = $user_id";
-    $user_result = $conn->query($user_sql);
+    $user_stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $user_stmt->bind_param("i", $user_id);
+    $user_stmt->execute();
+    $user_result = $user_stmt->get_result();
     $user = $user_result->fetch_assoc();
 }
 

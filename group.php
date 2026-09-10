@@ -10,43 +10,45 @@ if (!isset($_SESSION['user_id'])) {
 $groupId = $_GET['id'];
 $userId = $_SESSION['user_id'];
 
-$member_sql = "SELECT * FROM user_groups
-               WHERE user_id = $userId
-               AND group_id = $groupId";
-$member_result = $conn->query($member_sql);
+$member_stmt = $conn->prepare("SELECT * FROM user_groups WHERE user_id = ? AND group_id = ?");
+$member_stmt->bind_param("ii", $userId, $groupId);
+$member_stmt->execute();
+$member_result = $member_stmt->get_result();
 
 if ($member_result->num_rows === 0) {
     header("Location: index.php");
     exit;
 }
 
-$requests_sql = "SELECT group_requests.*, users.first_name, users.last_name
-                 FROM group_requests
-                 JOIN users ON group_requests.user_id = users.id
-                 WHERE group_requests.group_id = $groupId";
+$requests_stmt = $conn->prepare("SELECT group_requests.*, users.first_name, users.last_name
+                                 FROM group_requests
+                                 JOIN users ON group_requests.user_id = users.id
+                                 WHERE group_requests.group_id = ?");
+$requests_stmt->bind_param("i", $groupId);
+$requests_stmt->execute();
+$requests_result = $requests_stmt->get_result();
 
-$requests_result = $conn->query($requests_sql);
-
-$group_sql = "SELECT * FROM `groups` 
-              WHERE id = $groupId";
-
-$group_result = $conn->query($group_sql);
+$group_stmt = $conn->prepare("SELECT * FROM `groups` WHERE id = ?");
+$group_stmt->bind_param("i", $groupId);
+$group_stmt->execute();
+$group_result = $group_stmt->get_result();
 $group = $group_result->fetch_assoc();
 
-$discussion_sql = "SELECT discussions.id AS discussion_id,
-                          discussions.group_id,
-                          discussions.user_id,
-                          discussions.subject,
-                          discussions.created_at,
-                          discussions.content,
-                          users.first_name,
-                          users.last_name
-                  FROM discussions
-                  JOIN users ON discussions.user_id = users.id
-                  WHERE discussions.group_id = $groupId
-                  ORDER BY discussions.created_at DESC";
-
-$discussion_result = $conn->query($discussion_sql);
+$discussion_stmt = $conn->prepare("SELECT discussions.id AS discussion_id,
+                                          discussions.group_id,
+                                          discussions.user_id,
+                                          discussions.subject,
+                                          discussions.created_at,
+                                          discussions.content,
+                                          users.first_name,
+                                          users.last_name
+                                   FROM discussions
+                                   JOIN users ON discussions.user_id = users.id
+                                   WHERE discussions.group_id = ?
+                                   ORDER BY discussions.created_at DESC");
+$discussion_stmt->bind_param("i", $groupId);
+$discussion_stmt->execute();
+$discussion_result = $discussion_stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -83,13 +85,14 @@ $discussion_result = $conn->query($discussion_sql);
             <?php
             $discussionId = $discussion['discussion_id'];
 
-            $posts_sql = "SELECT posts.*, users.first_name, users.last_name
-              FROM posts
-              JOIN users ON posts.user_id = users.id
-              WHERE posts.discussion_id = $discussionId
-              ORDER BY posts.created_at ASC";
-
-            $posts_result = $conn->query($posts_sql);
+            $posts_stmt = $conn->prepare("SELECT posts.*, users.first_name, users.last_name
+                                          FROM posts
+                                          JOIN users ON posts.user_id = users.id
+                                          WHERE posts.discussion_id = ?
+                                          ORDER BY posts.created_at ASC");
+            $posts_stmt->bind_param("i", $discussionId);
+            $posts_stmt->execute();
+            $posts_result = $posts_stmt->get_result();
             ?>
 
             <div class="discussion">
