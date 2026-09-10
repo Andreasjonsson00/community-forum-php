@@ -99,9 +99,11 @@ $discussion_result = $conn->query($discussion_sql);
                     </a>
                 </h3>
                 <p><?= htmlspecialchars($discussion['content']) ?></p>
-                <p><?= htmlspecialchars($discussion['created_at']) ?></p>
-                <p><?= htmlspecialchars(ucfirst(strtolower($discussion['first_name']))) ?>
-                    <?= htmlspecialchars(ucfirst(strtolower($discussion['last_name']))) ?></p>
+                <div class="discussion-meta">
+                    <p><?= htmlspecialchars(ucfirst(strtolower($discussion['first_name']))) ?>
+                        <?= htmlspecialchars(ucfirst(strtolower($discussion['last_name']))) ?></p>
+                    <p class="created-at"><?= htmlspecialchars($discussion['created_at']) ?></p>
+                </div>
             </div>
         <?php endwhile; ?>
 

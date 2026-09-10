@@ -47,13 +47,17 @@ if (!isset($_SESSION['user_id'])) {
             <p class="description">
                 <?= htmlspecialchars($discussion['content']) ?>
             </p>
-            <p>
-                <?= htmlspecialchars($discussion['created_at']) ?>
-            </p>
-            <p>
-                <?= htmlspecialchars(ucfirst(strtolower($discussion['first_name']))) ?>
-                <?= htmlspecialchars(ucfirst(strtolower($discussion['last_name']))) ?>
-            </p>
+
+            <div class="discussion-meta">
+                <p>
+                    <?= htmlspecialchars(ucfirst(strtolower($discussion['first_name']))) ?>
+                    <?= htmlspecialchars(ucfirst(strtolower($discussion['last_name']))) ?>
+                </p>
+                <p class="created-at">
+                    <?= htmlspecialchars($discussion['created_at']) ?>
+                </p>
+
+            </div>
         </div>
 
         <?php
@@ -72,11 +76,13 @@ if (!isset($_SESSION['user_id'])) {
                 <article>
                     <p> <?= htmlspecialchars($post['content']) ?>
                     </p>
-                    <p><?= htmlspecialchars($post['created_at']) ?>
-                    </p>
-                    <p><?= htmlspecialchars(ucfirst(strtolower($post['first_name']))) ?>
-                        <?= htmlspecialchars(ucfirst(strtolower($post['last_name']))) ?>
-                    </p>
+                    <div class="post-meta">
+                        <p><?= htmlspecialchars(ucfirst(strtolower($post['first_name']))) ?>
+                            <?= htmlspecialchars(ucfirst(strtolower($post['last_name']))) ?>
+                        </p>
+                        <p class="created-at"><?= htmlspecialchars($post['created_at']) ?>
+                        </p>
+                    </div>
                 </article>
             <?php endwhile; ?>
         </div>
