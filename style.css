@@ -246,6 +246,15 @@ article p:last-child {
   font-size: 0.8rem;
 }
 
+.leave-group-button {
+    background-color: #b01f2e;
+    color: white;
+}
+
+.leave-group-button:hover {
+    background-color: #8c1a24;
+}
+
 footer {
   margin-top: auto;
   padding: 18px 24px;
