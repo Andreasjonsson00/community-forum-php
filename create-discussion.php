@@ -24,11 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $sql = "INSERT INTO discussions 
-            (user_id, group_id, subject, content, created_at)
-            VALUES ('$userId', '$groupId', '$subject', '$content', NOW())";
+    $stmt = $conn->prepare("INSERT INTO discussions (user_id, group_id, subject, content, created_at) VALUES (?, ?, ?, ?, NOW())");
+    $stmt->bind_param("iiss", $userId, $groupId, $subject, $content);
 
-    if ($conn->query($sql)) {
+    if ($stmt->execute()) {
         header("Location: group.php?id=$groupId");
         exit;
     } else {

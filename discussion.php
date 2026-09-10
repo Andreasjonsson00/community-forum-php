@@ -4,14 +4,15 @@ require "includes/database.php";
 
 $discussionId = $_GET['id'];
 
-$discussion_sql = "SELECT discussions.*, 
-                          users.first_name, 
-                          users.last_name
-                   FROM discussions
-                   JOIN users ON discussions.user_id = users.id
-                   WHERE discussions.id = $discussionId";
-
-$discussion_result = $conn->query($discussion_sql);
+$discussion_stmt = $conn->prepare("SELECT discussions.*,
+                                          users.first_name,
+                                          users.last_name
+                                   FROM discussions
+                                   JOIN users ON discussions.user_id = users.id
+                                   WHERE discussions.id = ?");
+$discussion_stmt->bind_param("i", $discussionId);
+$discussion_stmt->execute();
+$discussion_result = $discussion_stmt->get_result();
 $discussion = $discussion_result->fetch_assoc();
 
 if (!$discussion) {
@@ -61,13 +62,14 @@ if (!isset($_SESSION['user_id'])) {
         </div>
 
         <?php
-        $posts_sql = "SELECT posts.*, users.first_name, users.last_name
-                      FROM posts
-                      JOIN users ON posts.user_id = users.id
-                      WHERE posts.discussion_id = $discussionId
-                      ORDER BY posts.created_at ASC";
-
-        $posts_result = $conn->query($posts_sql);
+        $posts_stmt = $conn->prepare("SELECT posts.*, users.first_name, users.last_name
+                                      FROM posts
+                                      JOIN users ON posts.user_id = users.id
+                                      WHERE posts.discussion_id = ?
+                                      ORDER BY posts.created_at ASC");
+        $posts_stmt->bind_param("i", $discussionId);
+        $posts_stmt->execute();
+        $posts_result = $posts_stmt->get_result();
         ?>
 
         <div class="posts">

@@ -2,27 +2,45 @@
 session_start();
 require "includes/database.php";
 
+$error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $firstName = trim($_POST['first_name']);
     $lastName = trim($_POST['last_name']);
     $email = strtolower(trim($_POST['email']));
     $password = $_POST['password'];
-    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $confirmPassword = $_POST['confirm_password'];
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "<p>Ogiltig e-postadress.</p>";
-        exit;
+        $error = "Invalid email address.";
+    } elseif ($password !== $confirmPassword) {
+        $error = "Passwords do not match.";
+    } elseif (strlen($password) < 6) {
+        $error = "The password must be at least 6 characters long.";
     }
 
-    $sql = "INSERT INTO users (first_name, last_name, email, password)
-            VALUES ('$firstName', '$lastName', '$email', '$hash')";
+    if ($error === null) {
+        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $error = "A user with this email address already exists.";
+        }
+    }
 
-    if ($conn->query($sql)) {
-        header("Location: login.php");
-        exit;
-    } else {
-        echo "<p>Fel: " . $conn->error . "</p>";
+    if ($error === null) {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $firstName, $lastName, $email, $hash);
+
+        if ($stmt->execute()) {
+            $success = "Account has been created.";
+            header("Location: login.php?registered=true");
+            exit;
+        } else {
+            $error = "Error: " . $conn->error;
+        }
     }
 }
 ?>
@@ -46,27 +64,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main>
         <h1 class="title">Create Account</h1>
         <form method="POST" action="register.php">
+            <?php if ($error): ?>
+                <p><?= htmlspecialchars($error) ?></p>
+            <?php endif; ?>
             <div class="form-row">
-                <label for="first_name">Förnamn:</label>
-                <input type="text" id="first_name" name="first_name" required>
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" value="<?= htmlspecialchars($_POST['first_name'] ?? '') ?>" required>
             </div>
 
             <div class="form-row">
-                <label for="last_name">Efternamn:</label>
-                <input type="text" id="last_name" name="last_name" required>
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" value="<?= htmlspecialchars($_POST['last_name'] ?? '') ?>" required>
             </div>
 
             <div class="form-row">
-                <label for="email">E-post:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
             </div>
 
             <div class="form-row">
-                <label for="password">Lösenord:</label>
+                <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="form-row">
-                <button type="submit">Skapa konto</button>
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+            <div class="form-row">
+                <button class="create-account-button" type="submit">Create Account</button>
             </div>
         </form>
     </main>
