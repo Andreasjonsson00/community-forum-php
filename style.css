@@ -125,6 +125,7 @@ button {
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
 button:hover {
@@ -244,6 +245,15 @@ article p:last-child {
 .create-account-button {
   padding: 8px 10px;
   font-size: 0.8rem;
+}
+
+.leave-group-button {
+    background-color: #b01f2e;
+    color: white;
+}
+
+.leave-group-button:hover {
+    background-color: #8c1a24;
 }
 
 footer {

@@ -50,7 +50,7 @@ $result = $stmt->get_result();
             <?php if ($member_result->num_rows > 0): ?>
                 <form action="leave-group.php" method="POST">
                     <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
-                    <button type="submit">Leave Group</button>
+                    <button class="leave-group-button" type="submit">Leave Group</button>
                 </form>
 
             <?php else: ?>
