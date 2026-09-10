@@ -2,6 +2,12 @@
 session_start();
 require "includes/database.php";
 
+$error = null;
+$success = null;
+if (isset($_GET['registered']) && $_GET['registered'] === 'true') {
+    $success = "Account has been created. Please log in.";
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = $_POST['email'];
@@ -17,18 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $result->fetch_assoc();
 
         if (password_verify($password, $user['password'])) {
-
             $_SESSION['user_id'] = $user['id'];
-
             header("Location: index.php");
             exit;
         } else {
-
-            echo "Fel lösenord.";
+            $error = "Incorrect password.";
         }
     } else {
-
-        echo "Användaren finns inte.";
+        $error = "User not found.";
     }
 }
 
@@ -53,16 +55,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main>
         <h1 class="title">Login</h1>
         <form method="POST" action="login.php">
+            <?php if ($success): ?>
+                <p><?= htmlspecialchars($success) ?></p>
+            <?php endif; ?>
+            <?php if ($error): ?>
+                <p><?= htmlspecialchars($error) ?></p>
+            <?php endif; ?>
             <div class="form-row">
-                <label for="email">E-post:</label>
+                <label for="email">E-mail:</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-row">
-                <label for="password">Lösenord:</label>
+                <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="form-row">
-                <button type="submit">Logga in</button>
+                <button type="submit">Login</button>
             </div>
         </form>
     </main>
