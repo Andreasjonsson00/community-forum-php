@@ -2,6 +2,7 @@
 session_start();
 require "includes/database.php";
 
+$error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $firstName = trim($_POST['first_name']);
@@ -11,18 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "<p>Ogiltig e-postadress.</p>";
-        exit;
+        $error = "Ogiltig e-postadress.";
     }
 
-    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $firstName, $lastName, $email, $hash);
+    if ($error === null) {
+        $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $firstName, $lastName, $email, $hash);
 
-    if ($stmt->execute()) {
-        header("Location: login.php");
-        exit;
-    } else {
-        echo "<p>Fel: " . $conn->error . "</p>";
+        if ($stmt->execute()) {
+            header("Location: login.php");
+            exit;
+        } else {
+            $error = "Fel: " . $conn->error;
+        }
     }
 }
 ?>
@@ -46,6 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main>
         <h1 class="title">Create Account</h1>
         <form method="POST" action="register.php">
+            <?php if ($error): ?>
+                <p><?= htmlspecialchars($error) ?></p>
+            <?php endif; ?>
             <div class="form-row">
                 <label for="first_name">Förnamn:</label>
                 <input type="text" id="first_name" name="first_name" required>
